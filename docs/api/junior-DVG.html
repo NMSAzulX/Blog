@@ -8,15 +8,14 @@
 
 <link href='night/sourcemode.dark.css' rel='stylesheet' type='text/css' />
 <link rel="stylesheet" href="../styles/docfx.vendor.css">
-<style type='text/css'>html {overflow-x: initial !important;}:root { --bg-color: #ffffff; --text-color: #333333; --code-block-bg-color: inherit; }
+<style type='text/css'>html {overflow-x: initial !important;}:root { --bg-color: #ffffff62; --text-color: #333333; --code-block-bg-color: inherit; }
 
 html { font-family: 'Glyphicons Halflings', Tahoma, Helvetica, sans-serif; font-size: 16px; background-color: var(--bg-color); color: var(--text-color); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
-body { margin: 0px; padding: 0px; height: auto; bottom: 0px; top: 0px; left: 0px; right: 0px; line-height: 1.42857; overflow-x: hidden; background: inherit; }
+body { margin: 0px; padding: 0px; height: auto; bottom: 0px; top: 0px; left: 0px; right: 0px; line-height: 1.42857; overflow-x: auto; background: inherit; }
 a:active, a:hover { outline: 0px; }
 .in-text-selection, ::selection { background: rgb(181, 214, 252); text-shadow: none; }
 #write { margin: 0px auto; height: auto; width: inherit; word-break: normal; word-wrap: break-word; position: relative; padding-bottom: 70px; white-space: pre-wrap; overflow-x: visible; }
 .for-image #write { padding-left: 8px; padding-right: 8px; }
-body.typora-export { padding-left: 30px; padding-right: 30px; }
 @media screen and (max-width: 500px) {
   body.typora-export { padding-left: 0px; padding-right: 0px; }
   .CodeMirror-sizer { margin-left: 0px !important; }
@@ -341,11 +340,50 @@ li>p{
 <link rel="stylesheet" href="../styles/main.css">
 <meta property="docfx:navrel" content="../toc">
 <meta property="docfx:tocrel" content="toc">
+<script>
+  var canvas = null;
+  var image = null;
+  var docFrame = null;
+  window.onload=function(){
+    canvas = document.getElementById('canvas');
+    image = document.getElementById('background');
+    docReader = document.getElementById("wrapper");
+    docFrame = document.getElementById("rainBody")
+    resizeCanvas();
+    image.onload = function() {
+      var engine = new RainyDay({
+          image: this,
+          crop: [ 50, 50, 600, 400],
+          //gravityAngleVariance:1
+      }, canvas);
+      engine.rain([ [1, 8, 40] ]);
+      engine.trail = engine.TRAIL_SMUDGE;
+      engine.rain([ [3, 3, 0.1] ], 33);
+  };
+     //image.crossOrigin = 'anonymous';
+     //image.src = '../images/DVG/bck.jpg';
+     image.crossOrigin = 'anonymous';
+     image.src="../images/DVG/bck.jpg";
+     $(window).resize(resizeCanvas);
+  }
+ 
+ function resizeCanvas() {
+        canvas.setAttribute("width", docFrame.offsetWidth);
+        canvas.setAttribute("height", docFrame.offsetHeight);
+        image.style.width= docFrame.offsetWidth+"px";
+        image.style.height= docFrame.offsetHeight+"px";
+        docReader.style.width= docFrame.offsetWidth+"px";
+        docReader.style.height= docFrame.offsetHeight+"px";
+
+ };
+ 
+</script>
 </head>
-  <body class='typora-export' data-spy="scroll" data-target="#affix">
-    <div id="wrapper">
+  <body class='typora-export' data-spy="scroll" data-target="#affix" id="rainBody">
+      <img id="background"  style="position:absolute;" alt="background" src="" />
+      <canvas id="canvas" style="position:absolute;" ></canvas>
+    <div id="wrapper" style="overflow:auto;">
       <header>
-  
         <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
@@ -377,7 +415,7 @@ li>p{
             </div>
           </div>
         </nav>
-  
+        
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -397,22 +435,22 @@ li>p{
                   <input type="text" id="toc_filter_input" style="line-height:init" placeholder="Enter here to filter..." onkeypress="if(event.keyCode==13) {return false;}">
                 </form>
               </div>
-              <div class="sidetoc">
+              <div class="sidetoc" id="SideLeft">
                 <div class="toc" id="toc">
                   <ul class="nav level1">
                     <li class="">
                       <span class="expand-stub"></span>
-                      <a href="EasyStudy.html" title="入门干货系列" class="">入门干货系列</a>
+                      <a href="junior.html" title="入门干货系列" class="">入门干货系列</a>
   
                       <ul class="nav level2">
                         <li class="">
-                          <h5><a href="Study-DVG.html" title="入门干货之用DVG打造你的项目主页-Docfx、Vs、Github" class="">用DVG打造项目主页</a></h5>
+                          <h5><a href="junior-DVG.html" title="入门干货之用DVG打造你的项目主页-Docfx、Vs、Github" class="">用DVG打造项目主页</a></h5>
                         </li>
                         <li class="">
-                          <h5><a href="Study-Electron.html" title="入门干货之Electron的.NET实现-Electron.NET" class="">Electron-Electron.NET</a></h5>
+                          <h5><a href="junior-Electron.html" title="入门干货之Electron的.NET实现-Electron.NET" class="">Electron-Electron.NET</a></h5>
                         </li>
                         <li class="">
-                          <h5><a href="Study-Grpc.html" title="入门干货之Grpc的.Net实现-MagicOnion" class="">Grpc-MagicOnion</a></h5>
+                          <h5><a href="junior-Grpc.html" title="入门干货之Grpc的.Net实现-MagicOnion" class="">Grpc-MagicOnion</a></h5>
                         </li>
                       </ul>
                     </li>
@@ -468,6 +506,9 @@ li>p{
 <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
 <script type="text/javascript" src="../styles/docfx.js"></script>
 <script type="text/javascript" src="../styles/main.js"></script>
+<script type="text/javascript" src="../styles/rainyday.min.js"></script>
+<script type="text/javascript" src="../styles/jquery-3.2.1.min.js"></script>
+
 </body>
 
 </html>
