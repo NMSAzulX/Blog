@@ -325,6 +325,13 @@ li>p{
 .file-list-item.active { background-color: var(--active-file-bg-color); }
 #ty-tooltip { background-color: black; color: rgb(238, 238, 238); }
 #write { cursor: -webkit-image-set(url("night/cursor.png") 1x, url("night/cursor@2x.png") 2x) 8 8, auto; }
+.fixed-image{
+  background: url(../images/DVG/bck.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
 </style>
 
 <meta charset="utf-8">
@@ -345,44 +352,48 @@ li>p{
   var image = null;
   var docFrame = null;
   window.onload=function(){
-    canvas = document.getElementById('canvas');
-    image = document.getElementById('background');
     docReader = document.getElementById("wrapper");
-    docFrame = document.getElementById("rainBody")
-    resizeCanvas();
-    image.onload = function() {
+    docFrame = document.getElementById("rainBody");
+    docCanvas =document.getElementById("canvas");
+    docImage = document.getElementById("image");
+    resizeDoc();
+    
       var engine = new RainyDay({
-          image: this,
-          crop: [ 50, 50, 600, 400],
-          sound:"../sound/rain.mp3"
-          //gravityAngleVariance:1
-      }, canvas);
-      engine.rain([ [1, 8, 40] ]);
+          image: docImage,
+          blur:10,
+          sound:"../sound/rain.mp3",
+          canvas:docCanvas,
+          fps:30,
+          gravityThreshold:3
+      });
       engine.trail = engine.TRAIL_SMUDGE;
-      engine.rain([ [3, 3, 0.1] ], 33);
-  };
-     //image.crossOrigin = 'anonymous';
-     //image.src = '../images/DVG/bck.jpg';
-     image.crossOrigin = 'anonymous';
-     image.src="../images/DVG/bck.jpg";
-     $(window).resize(resizeCanvas);
+      //最小半径
+      //最大半径
+      //水滴生成速度，影响性能
+      //清晰度
+      engine.rain([ 
+        [4, 6, 0.4],
+        [7, 8, 0.4]
+      ], 50);
+      window.addEventListener("resize",resizeDoc);
+     
   }
- 
- function resizeCanvas() {
-        canvas.setAttribute("width", docFrame.offsetWidth);
-        canvas.setAttribute("height", docFrame.offsetHeight);
-        image.style.width= docFrame.offsetWidth+"px";
-        image.style.height= docFrame.offsetHeight+"px";
-        docReader.style.width= docFrame.offsetWidth+"px";
-        docReader.style.height= docFrame.offsetHeight+"px";
 
+
+ function resizeDoc() {
+    docImage.setAttribute("width", docFrame.clientWidth);
+    docImage.setAttribute("height", docFrame.clientHeight);
+    docCanvas.setAttribute("width", docFrame.clientWidth);
+    docCanvas.setAttribute("height", docFrame.clientHeight);
+    docReader.style.width= docFrame.clientWidth+"px";
+    docReader.style.height= docFrame.clientHeight+"px";
  };
  
 </script>
 </head>
-  <body class='typora-export' data-spy="scroll" data-target="#affix" id="rainBody">
-      <img id="background"  style="position:absolute;" alt="background" src="" />
-      <canvas id="canvas" style="position:absolute;" ></canvas>
+  <body class='typora-export ' data-spy="scroll" data-target="#affix" id="rainBody">
+    <canvas id="canvas" style="position:absolute;"></canvas>
+    <img id="image" style="position:absolute;z-index:-1" src="../images/DVG/bck.jpg" />
     <div id="wrapper" style="overflow:auto;">
       <header>
         <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
@@ -507,8 +518,7 @@ li>p{
 <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
 <script type="text/javascript" src="../styles/docfx.js"></script>
 <script type="text/javascript" src="../styles/main.js"></script>
-<script type="text/javascript" src="../styles/rainyday.min.js"></script>
-<script type="text/javascript" src="../styles/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="../js/rainyday.min.js"></script>
 
 </body>
 
