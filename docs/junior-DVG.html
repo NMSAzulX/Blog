@@ -3,9 +3,9 @@
 <head>
 
 <meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
-<title>DVG</title><link href='night/mermaid.dark.css' rel='stylesheet' type='text/css' />
-<link href='night/codeblock.dark.css' rel='stylesheet' type='text/css' />
-<link href='night/sourcemode.dark.css' rel='stylesheet' type='text/css' />
+<title>DVG</title><link href='./themes/night/mermaid.dark.css' rel='stylesheet' type='text/css' />
+<link href='./themes/night/codeblock.dark.css' rel='stylesheet' type='text/css' />
+<link href='./themes/night/sourcemode.dark.css' rel='stylesheet' type='text/css' />
 <style type='text/css'>html {overflow-x: initial !important;}:root { --bg-color: #ffffff62; --text-color: #333333; --code-block-bg-color: inherit; }
           
 html { width:100%;height:100%; font-family: 'Glyphicons Halflings', Tahoma, Helvetica, sans-serif; font-size: 16px; background-color: var(--bg-color); color: var(--text-color); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
@@ -375,7 +375,6 @@ li>p{
 
 
  function resizeDoc() {
-   console.log(window.innerHeight);
     docImage.setAttribute("width", window.innerWidth);
     docImage.setAttribute("height", window.innerHeight);
     docCanvas.setAttribute("width", window.innerWidth);
