@@ -1,0 +1,78 @@
+
+.welcome-text {
+    font-size:36px;
+    display: table;
+    text-align: center;
+    margin:auto auto;
+  }
+ 
+  .welcome-text p span {
+    float:left;
+    padding: 10px;
+    color: #fff;
+    text-shadow: 2px 2px #181818;
+  }
+  .welcome-text p span:nth-child(even) {
+    -webkit-animation-name: wiggleEven;
+    -webkit-animation-duration: .6s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: ease;
+    animation-name: wiggleEven;
+    animation-duration: .6s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease;
+  }
+  .welcome-text p span:nth-child(odd) {
+    -webkit-animation-name: wiggleOdd;
+    -webkit-animation-duration: .4s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: ease;
+    animation-name: wiggleOdd;
+    animation-duration: .4s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease;
+  }
+  @-webkit-keyframes wiggleEven {
+    from {
+      -webkit-transform: rotateZ(10deg) translateY(4px);
+    }
+    50% {
+      -webkit-transform: rotateZ(-20deg) translateY(-4px);
+    }
+    to {
+      -webkit-transform: rotateZ(10deg) translateY(4px);
+    }
+  }
+  @-webkit-keyframes wiggleOdd {
+    from {
+      -webkit-transform: rotateZ(-20deg) translateY(-4px);
+    }
+    50% {
+      -webkit-transform: rotateZ(2deg) translateY(4px);
+    }
+    to {
+      -webkit-transform: rotateZ(-20deg) translateY(-4px);
+    }
+  }
+  @keyframes wiggleEven {
+    from {
+      transform: rotateZ(10deg) translateY(4px);
+    }
+    50% {
+      transform: rotateZ(-20deg) translateY(-4px);
+    }
+    to {
+      transform: rotateZ(10deg) translateY(4px);
+    }
+  }
+  @keyframes wiggleOdd {
+    from {
+      transform: rotateZ(-20deg) translateY(-4px);
+    }
+    50% {
+      transform: rotateZ(2deg) translateY(4px);
+    }
+    to {
+      transform: rotateZ(-20deg) translateY(-4px);
+    }
+  }

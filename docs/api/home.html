@@ -1,0 +1,407 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <link href='./styles/css-dance.css' rel='stylesheet' type='text/css' />
+    <style>
+        /* Basic sample */
+        html{
+            width:100%;
+            height:100%;
+        }
+        body {
+            width:100%;
+            height:100%;
+            overflow: hidden;
+            background-color: #fcfcfc;
+            background-image: url(./images/BOOK/body.jpg);
+            background-size: cover;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+        }
+
+        .flipbook-viewport {
+            position: absolute;
+            margin-top: 5%;
+            z-index: 1;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+        }
+
+        .flipbook-viewport .container {
+            margin: auto;
+            width: 100%;
+            height: 100%;
+        }
+
+        .flipbook-viewport .flipbook {
+            width: 100%;
+            height: 100%;
+            top: 0;
+        }
+
+
+        .page-wrapper {
+            border-bottom: 1px solid rgb(220, 220, 220);
+            box-shadow: 1px 1px 6px gray; 
+        }
+
+
+        content {
+            display: block;
+            margin: 2.5% 6.5%;
+            font-family: "楷体","楷体_GB2312"; 
+            font-size:18px;
+        }
+
+        covers {
+            display: block;
+            background-color: white;
+            box-shadow: none;
+            -webkit-box-shadow: none;
+            -moz-box-shadow: none;
+            -ms-box-shadow: none;
+            box-shadow: none;
+        }
+
+
+        .flipbook .even {
+            background: -webkit-gradient(linear, left top, right top, color-stop(0.95, #fff), color-stop(1, #dadada));
+            background-image: -webkit-linear-gradient(left, #fff 95%, #dadada 100%);
+            background-image: -moz-linear-gradient(left, #fff 95%, #dadada 100%);
+            background-image: -ms-linear-gradient(left, #fff 95%, #dadada 100%);
+            background-image: -o-linear-gradient(left, #fff 95%, #dadada 100%);
+            background-image: linear-gradient(left, #fff 95%, #dadada 100%);
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+
+        .flipbook .odd {
+            background: -webkit-gradient(linear, right top, left top, color-stop(0.95, #fff), color-stop(1, #cacaca));
+            background-image: -webkit-linear-gradient(right, #fff 95%, #cacaca 100%);
+            background-image: -moz-linear-gradient(right, #fff 95%, #cacaca 100%);
+            background-image: -ms-linear-gradient(right, #fff 95%, #cacaca 100%);
+            background-image: -o-linear-gradient(right, #fff 95%, #cacaca 100%);
+            background-image: linear-gradient(right, #fff 95%, #cacaca 100%);
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+
+        #head {
+            position: absolute;
+            background: url(./images/BOOK/head.jpg);
+            /*-webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;*/
+            background-color: #f0f1ec;
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position-y: bottom;
+        }
+
+        #head-next {
+            background: url(./images/BOOK/head.jpg);
+            box-shadow: 0 0 0 0, /*左边阴影*/
+            6px 0 6px gray, /*右边阴影*/
+            0 0 0 0, /*顶部阴影*/
+            5px 5px 5px gray;
+            /*底边阴影*/
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            /*transform: skew(0, -4deg);
+            -ms-transform: skew(0, -4deg);
+            -moz-transform: skew(0, -4deg);
+            -webkit-transform: skew(0, -4deg);
+            -o-transform: skew(0, -4deg);
+            margin-top: -5px;*/
+        }
+
+        #end {
+            background: url(./images/BOOK/end.jpg);
+            /*-webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;*/
+            background-size: 100% 100%;
+        }
+
+        #end-pre {
+
+            background: url(./images/BOOK/end-pre.jpg);
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+
+        #font-title {
+            height: 100%;
+            width: 100%;
+            margin-left: 26%;
+            padding-top: 0;
+        }
+
+        paper {
+            display: block;
+            font-size: 12px;
+        }
+
+        page {
+            display: inline;
+        }
+
+        chapter {
+            display: inline;
+        }
+
+        #strange {
+            z-index: 18;
+            cursor: pointer;
+        }
+        linkwords{
+            font-size: 24px;
+            color:red;
+            font-weight:bold;
+            display:inline;
+        }
+    </style>
+    <script type="text/javascript" src="./js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="./js/modernizr.2.5.3.min.js"></script>
+
+    <script>
+        var bookWidth = window.innerWidth - 40;
+        var bookHeight = window.innerHeight * 0.9;
+        var flag = window.screen.height / window.screen.width;
+        if (bookWidth >= bookHeight * flag) {
+            bookWidth = bookWidth * 0.8;
+        }
+        while (bookHeight * flag >= (bookWidth * 2)) {
+            bookHeight = bookHeight / 2;
+        }
+        var bookEle = null;
+        window.onload = function () {
+            yepnope({
+                test: Modernizr.csstransforms,
+                yep: ['./lib/turn.js'],
+                nope: ['./lib/turn.html4.min.js'],
+                complete: loadApp
+            });
+            resizeAllElement();
+            window.addEventListener("resize", resizeAllElement, false);
+        }
+
+        function resizeAllElement() {
+
+            bookWidth = window.innerWidth - 40;
+            bookHeight = window.innerHeight * 0.9;
+            flag = window.screen.height / window.screen.width;
+            if (bookWidth >= bookHeight * flag) {
+                bookWidth = bookWidth * 0.8;
+            }
+            while (bookHeight * flag >= (bookWidth * 2)) {
+                bookHeight = bookHeight / 2;
+            }
+            var fontNode = document.querySelector("#font-title");
+            fontNode.style.fontSize=Math.floor(bookWidth*48/window.screen.width)+"px";
+            
+            var node = document.querySelector(".flipbook");
+            node.style.left = (window.innerWidth - bookWidth) / 2 + "px";
+            var bookNode = document.querySelector(".flipbook-viewport");
+            bookNode.style.marginTop = (window.innerHeight - bookHeight) / 2 + "px";
+
+            var elemTree = document.querySelector("#tree-canvas");
+            elemTree.width = window.innerWidth;
+            elemTree.height = window.innerHeight;
+            var elemPeople = document.querySelector("#strange");
+            elemPeople.setAttribute("width", bookWidth / 2);
+            elemPeople.setAttribute("height", 200);
+            if(bookEle!=null){
+                bookEle.turn("size",bookWidth,bookHeight);
+            }
+        }
+       
+        function loadApp() {
+
+            var node = document.querySelector(".flipbook");
+
+            node.style.left = (window.innerWidth - bookWidth) / 2 + "px";
+            var bookNode = document.querySelector(".container");
+            bookNode.style.top = (window.innerHeight - bookHeight) / 2 + "px";
+
+            var nodes = document.querySelectorAll("covers");
+            for (var index = 0; index < nodes.length; index++) {
+                var element = nodes[index];
+                element.className = element.className + " hard";
+            }
+            bookEle = $('.flipbook').turn({
+                // Width
+
+                width: bookWidth,
+
+                // Height
+
+                height: bookHeight,
+
+                // Elevation
+
+                elevation: 50,
+
+                // Enable gradients
+
+                gradients: true,
+
+                // Auto center this flipbook
+
+                autoCenter: true,
+
+                display: "double",
+
+                duration: 800,
+
+                pages: 8
+            });
+
+            //$('.flipbook').bind(($.isTouch) ? 'touchend' : 'click', zoomHandle);
+            $(document).keydown(function (e) {
+                switch (e.keyCode) {
+                    case 37:
+                        $('.flipbook').turn('previous');
+                        break;
+                    case 39:
+                        $('.flipbook').turn('next');
+                        break;
+                }
+            });
+            var pages = document.querySelectorAll("content");
+            for (var index = 1; index < nodes.length; index++) {
+                var ele = pages[index];
+                ele.insertBefore(GetPage(index), ele.children[0]);
+            }
+        }
+
+        function GetPage(index) {
+            var head = document.createElement("div");
+            if ((index & 1) === 0) {
+                head.style.textAlign = "right";
+            }
+            var paper = document.createElement("page-head");
+            paper.innerHTML = "<page>" + index + "</page><hr>"
+            head.appendChild(paper);
+            return head;
+        }
+    </script>
+</head>
+
+<body translate="no">
+    <canvas id="tree-canvas" style="position: absolute;"></canvas>
+    <div class="flipbook-viewport">
+        <div class="container ">
+            <div class="flipbook">
+                <!--封面-->
+                <covers id="head">
+                    <div id="font-title"></div>
+                    <textarea rows="2" cols="6" id="font-text" name="text" style="visibility:collapse;font-size:48px">奇怪语 与
+    奇奇怪怪人</textarea>
+                </covers>
+
+                <!--后面-->
+                <covers>
+                    <div id="head-next" style="width:100px;height:100%;"></div>
+                </covers>
+
+                <!--首页-->
+                <div>
+                    <content style="text-align:center">
+                        <div style="width:100%;">
+                                <div class="welcome-text">
+                                      <p>
+                                            <span>精</span>
+                                            <span>神</span>
+                                            <span>分</span>
+                                            <span>裂</span>
+                                            <span>码</span>
+                                        </p>
+                                    </div>
+                        </div>
+
+
+                        <div style="position: relative;font-size:28px;">
+                            <p>天街小雨润如酥，</br>
+                                草色遥看近却无。</br>
+                                最是一年春好处，</br>
+                                睡你麻痹起来撸。</br>
+                            </p>
+                            <div style="position: relative;">
+                                <canvas id="strange"></canvas>
+                            </div>
+                            <script>
+                                var elemPeople = document.querySelector("#strange");
+                                elemPeople.setAttribute("width", bookWidth / 2);
+                                elemPeople.setAttribute("height", 200);
+                            </script>
+
+                        </div>
+
+                    </content>
+                </div>
+
+                <!--内容页-->
+                <div>
+                    <content style="text-align:center">
+                        <div style="position: relative;">
+                                <h1>春</h1>
+                                <p>
+                                    绿树阴浓夏日长，楼台倒影入池塘。</br>
+                                    水晶帘动微风起，满架蔷薇一院香。
+                                </p>
+                        </div>
+                       
+                    </content>
+                </div>
+
+
+                <div>
+                        <content style="text-align:center">
+                        <h1>夏</h1>
+                        <p style="margin-left:10px;">
+                            <linkwords>夏</linkwords>雨潺潺映荷真，<br><br>
+                            落木潇潇<linkwords>秋</linkwords>叶深。<br><br>
+                            风寒凛凛随<linkwords>冬</linkwords>去，<br><br>
+                            暮雨清清又一<linkwords>春</linkwords>。
+                        </p>
+                    </content>
+                </div>
+
+
+                <div>
+                    <content>
+                        <h1>冬</h1>
+                        <p>北国风光，千里冰封，万里雪飘。</p>
+                    </content>
+                </div>
+
+                <!--结尾页-->
+                <covers id="end-pre"></covers>
+                <!--书背-->
+                <covers id="end"></covers>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="./js/strange-people.js"></script>
+    <script type="text/javascript" src="./js/oh-tree.js"></script>
+    <script type="text/javascript" src="./js/font-rewrite.js"></script>
+</body>
+
+</html>
